@@ -29,7 +29,7 @@ const float nz_max = 0.0005;
 const float min_dist_from_ceil_and_floor = 0.05;
 const int min_bin_size = 200;
 const float max_dist = 0.3; // points must be within this distance of each other to go in the same bin. this and the next are the important parameters
-const float max_angle = 0.5;
+const float max_angle = 1.0;
 
 
 // parameters for displaying output
