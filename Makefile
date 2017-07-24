@@ -1,5 +1,6 @@
 CC=g++
 CFLAGS=-std=c++11 -c -g
+LIB=-I /usr/include/eigen3/
 BIN=bin
 SRC=src
 SRCS=$(wildcard $(SRC)/*.cpp)
@@ -15,7 +16,7 @@ all : $(EXES)
 	$(CC) $< -o $(BIN)/$@
 
 %.o : %.cpp
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(LIB) $< -o $@
 
 listflags :
 	@echo CC=$(CC)

@@ -39,7 +39,7 @@ const float linelen = 0.1; // display lines with length 0.1
 
 int main(int argc, char *argv[])
 {
-  if (argc != 2) { std::cout << "Usage: ./dumb_find_walls plyfile" << std::endl; return -1; }
+  if (argc != 2) { std::cout << "Usage: ./wall_finder plyfile" << std::endl; return -1; }
 	
   // 1-- load .ply file into verts, norms, and crvts
   std::vector<float> verts;
@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
   cout.flush();
   timepoint before=now();
   std::vector< std::vector< ParametrizedLine<float,2> > > wall_bins;
+  std::random_shuffle(all_walls.begin(), all_walls.end());
   walls_to_bins(all_walls, wall_bins, max_angle, max_dist, min_bin_size);
   timepoint after=now();
   std::cout << (double)std::chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << std::endl;
