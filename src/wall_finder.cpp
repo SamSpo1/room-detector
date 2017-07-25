@@ -39,7 +39,7 @@ const float linelen = 0.1; // display lines with length 0.1
 
 int main(int argc, char *argv[])
 {
-  if (argc != 2) { std::cout << "Usage: ./dumb_find_walls plyfile" << std::endl; return -1; }
+  if (argc != 2) { std::cout << "Usage: ./wall_finder *.ply" << std::endl; return -1; }
 	
   // 1-- load .ply file into verts, norms, and crvts
   std::vector<float> verts;
