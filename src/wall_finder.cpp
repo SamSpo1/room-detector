@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
   cout.flush();
   timepoint before=now();
   std::vector< std::vector< ParametrizedLine<float,2> > > wall_bins;
+  std::random_shuffle(all_walls.begin(), all_walls.end());
   walls_to_bins(all_walls, wall_bins, max_angle, max_dist, min_bin_size);
   timepoint after=now();
   std::cout << (double)std::chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << std::endl;
