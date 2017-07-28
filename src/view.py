@@ -1,8 +1,9 @@
+# purpose -- display image from file of line segments
+
 import glob
 import numpy as np
 import pylab as pl
 from matplotlib import collections as mc
-# import sys
 
 def selector(path):
     files = []

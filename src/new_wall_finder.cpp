@@ -28,9 +28,9 @@ int main(int argc, char *argv[])
 {
   if (argc != 2) { cout << "Usage: ./new_wall_finder *.ply" << endl; return -1; }
 	
-  cout << "sizeof(Wall*) = " << sizeof(Wall*) << ", sizeof(int) = " << sizeof(int) << endl;
+  cout << "sizeof(Wall*) = " << sizeof(Wall*) << ", sizeof(int) = " << sizeof(int) << endl; // reminder to maybe switch to vectors of integer ids ?
   
-  // 1-- load .ply file into verts, norms, and crvts, then populate all_walls
+  // load .ply file into verts, norms, and crvts, then populate all_walls
   vector<float> verts;
   vector<uint8_t> colors;
   vector<float> norms;
@@ -38,15 +38,14 @@ int main(int argc, char *argv[])
   read_ply_file(argv[1], verts, colors, norms, crvts);
   raw_to_wall(verts, norms, crvts);
   
-  // 2-- put walls in bins
+  // put walls in bins
   timepoint before=now();
-  for (bin=0; !unbinned_walls.empty(); bin++) { // try bin=0
+  for (bin=0; !unbinned_walls.empty(); bin++) {
     untrimmed_bins.push_back(empty_bin);
     next_layer.push_back(unbinned_walls[0]);
-    //bin=i;
     while (!next_layer.empty()) next_layer.back()->binnize();
     Vector2f pvars = pca(untrimmed_bins[bin]);
-    if (untrimmed_bins.back().size() > min_bin_size and
+    if (untrimmed_bins.back().size() > min_bin_size and 
         min(pvars(0),pvars(1))/max(pvars(0),pvars(1)) < max_var_ratio) {
       bins.push_back(untrimmed_bins[bin]);
       cout << "Finished making bin " << bin << " of size " << untrimmed_bins[bin].size() << "        " << endl;
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
   timepoint after=now();
   cout << "Putting " << all_walls.size() << " walls in " << bins.size() << " bins..." << (double)chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << "                        " << endl;
   
-  
+  // name file to output
   std::string outfilename = "tests/nfw_mbs"+std::to_string(min_bin_size)+"md"+std::to_string(max_dist)+"ma"+std::to_string(max_angle)+".txt";
   ofstream outfile;
   outfile.open(outfilename);

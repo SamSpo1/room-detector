@@ -1,3 +1,5 @@
+// visualize *.ply file: take number_of_lines random vertices and save the walls they generate to outputfile
+
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <map>

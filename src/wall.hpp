@@ -1,3 +1,5 @@
+// todo: switch to unsigned ?
+
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <math.h>
@@ -89,7 +91,7 @@ void Wall::print() {
   cout << this << ":\t" << "( " << this->pos(0) << ", " << this->pos(1) << ", " << this->angle << " ):\t" << this->get_box() << endl;
 }
 
-void Wall::binnize() {
+void Wall::binnize() { // get all the walls that belong in the same bin as *this, store their references in next_layer.  center of new_wall_finder method
   int box_x = (int)((this->pos(0)-min_x)/max_dist);
   int box_y = (int)((this->pos(1)-min_y)/max_dist);
   int box_angle = (int)(this->angle/max_angle);
