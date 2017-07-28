@@ -3,6 +3,7 @@ CFLAGS=-std=c++11 -c -g
 LIB=-I /usr/include/eigen3/
 BIN=bin
 SRC=src
+BUILD=build
 SRCS=$(wildcard $(SRC)/*.cpp)
 EXES=$(SRCS:$(SRC)/%.cpp=%)
 
@@ -12,10 +13,10 @@ EXES=$(SRCS:$(SRC)/%.cpp=%)
 
 all : $(EXES)
 
-% : $(SRC)/%.o
+% : $(BUILD)/%.o
 	$(CC) $< -o $(BIN)/$@
 
-%.o : %.cpp
+$(BUILD)/%.o : $(SRC)/%.cpp
 	$(CC) $(CFLAGS) $(LIB) $< -o $@
 
 listflags :
@@ -25,8 +26,9 @@ listflags :
 	@echo SRC=$(SRCS)
 	@echo SRCS=$(SRCS)
 	@echo EXES=$(EXES)
+	@eecho BUILD=$(BUILD)
 
 clean :
-	rm -rf $(SRC)/*.o
+	rm -rf $(BUILD)/*
 	rm -rf $(BIN)/*
 
