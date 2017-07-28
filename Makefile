@@ -16,7 +16,7 @@ all : $(EXES)
 % : $(BUILD)/%.o
 	$(CC) $< -o $(BIN)/$@
 
-$(BUILD)/%.o : $(SRC)/%.cpp
+$(BUILD)/%.o : $(SRC)/%.*
 	$(CC) $(CFLAGS) $(LIB) $< -o $@
 
 listflags :
