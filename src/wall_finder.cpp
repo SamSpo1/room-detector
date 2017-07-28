@@ -15,7 +15,6 @@
  * 3. filter verts by curvature, normal z-component, and distance-from-ceiling-and-floor, put filtered data into all_walls using ParametrizedLine structure from Eigen
  * 4. put walls into bins based on approx_same function
  * 5. filter out bins that are too small or too glob-y
- * 
  * */
 
 
@@ -51,7 +50,6 @@ int main(int argc, char *argv[])
   // 2-- TODO: improve data?
   
   // 3-- filter into all_walls
-  std::cout << "Generating walls from " << verts.size() << " points..." << std::endl;
   std::vector< ParametrizedLine<float,2> > all_walls;
   raw_to_wall(verts, norms, crvts, all_walls, crvt_max, nz_max, min_dist_from_ceil_and_floor);
   

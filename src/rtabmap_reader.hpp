@@ -24,7 +24,7 @@ void read_ply_file(const std::string & filename, std::vector<float>& verts, std:
 
 		// parse the ASCII header fields
 		PlyFile file(ss);
-
+/*
 		for (auto e : file.get_elements())
 		{
 			std::cout << "element - " << e.name << " (" << e.size << ")" << std::endl;
@@ -39,7 +39,7 @@ void read_ply_file(const std::string & filename, std::vector<float>& verts, std:
 		{
 			std::cout << "Comment: " << c << std::endl;
 		}
-		
+		*/
 		
 		uint32_t vertexCount, colorCount, normalCount, curvatureCount;
 		vertexCount = colorCount = normalCount = curvatureCount = 0;
@@ -51,13 +51,15 @@ void read_ply_file(const std::string & filename, std::vector<float>& verts, std:
 		colorCount = file.request_properties_from_element("vertex", { "red", "green", "blue" }, colors);
 		normalCount = file.request_properties_from_element("vertex", { "nx", "ny", "nz" }, norms);
 		curvatureCount = file.request_properties_from_element("vertex", { "curvature" }, crvts);
-
-		// now populate the vectors...
-		timepoint before = now();
+    
+    
+    std::cout << "Loading " << file.get_elements()[0].size << " vertices...";
+    std::cout.flush();
+    timepoint before=now();
 		file.read(ss);
-		timepoint after = now();
+    timepoint after=now();
 
-		std::cout << "Loading took " << (double)std::chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << std::endl;
+		std::cout << (double)std::chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << std::endl;
 	}
 
 	catch (const std::exception & e)
