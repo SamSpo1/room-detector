@@ -23,12 +23,14 @@ listflags :
 	@echo CC=$(CC)
 	@echo CFLAGS=$(CFLAGS)
 	@echo BIN=$(BIN)
-	@echo SRC=$(SRCS)
+	@echo SRC=$(SRC)
 	@echo SRCS=$(SRCS)
 	@echo EXES=$(EXES)
-	@eecho BUILD=$(BUILD)
+	@echo BUILD=$(BUILD)
 
 clean :
 	rm -rf $(BUILD)/*
 	rm -rf $(BIN)/*
 
+test :
+	./bin/new_wall_finder data/bwi_lab.ply
