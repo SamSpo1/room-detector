@@ -40,18 +40,30 @@ int main(int argc, char *argv[])
   
   // put walls in bins
   timepoint before=now();
-  for (bin=0; !unbinned_walls.empty(); bin++) {
-    untrimmed_bins.push_back(empty_bin);
-    next_layer.push_back(unbinned_walls[0]);
+	bin = 0;
+  for (int i=0; i<all_walls.size(); i++) {
+    if (all_walls[i].binned) continue;
+
+		next_layer.push_back(&all_walls[i]);
+		untrimmed_bins.push_back(empty_bin);
+		for (int j=0; j<boxes[all_walls[i].get_box()].size(); j++) {
+			if (boxes[all_walls[i].get_box()][j]==&all_walls[i])
+				boxes[all_walls[i].get_box()].erase(boxes[all_walls[i].get_box()].begin()+j);
+		}
+
     while (!next_layer.empty()) next_layer.back()->binnize();
+
     Vector2f pvars = pca(untrimmed_bins[bin]);
-    if (untrimmed_bins.back().size() > min_bin_size and 
+    
+		if (untrimmed_bins.back().size() > min_bin_size and 
         min(pvars(0),pvars(1))/max(pvars(0),pvars(1)) < max_var_ratio) {
       bins.push_back(untrimmed_bins[bin]);
       cout << "Finished making bin " << bin << " of size " << untrimmed_bins[bin].size() << "        " << endl;
     }
     else if (bin%100==0) cout << "Finished making bin " << bin << " of size " << untrimmed_bins[bin].size() << "        \r" << flush;
-  }
+  	if (untrimmed_bins.back().size()==2) cout << bins.back()[0] << ", " << bins.back()[1] << endl;
+		bin++;
+	}
   timepoint after=now();
   cout << "Putting " << all_walls.size() << " walls in " << bins.size() << " bins..." << (double)chrono::duration_cast<std::chrono::seconds>(after - before).count() << "s" << "                        " << endl;
   

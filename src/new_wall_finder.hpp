@@ -21,6 +21,11 @@ Vector2f average(vector<Wall*>& bin) {
 }
 
 Vector2f pca(vector<Wall*>& bin) {
+	if (bin.size() < 2) {
+		Vector2f out;
+		out(0)=out(1)=1;
+		return out;
+	}
   Vector2f avg = average(bin);
   Vector2f var = Vector2f::Zero();
   for(auto &b : bin) {
@@ -85,7 +90,6 @@ void raw_to_wall(vector<float>& vertices, vector<float>& normals, vector<float>&
         vertices[3*i + 2] > min_z + min_dist_from_ceil_and_floor) {
       float temp_angle = atan2(-vertices[3*i+1],vertices[3*i]);
       all_walls.emplace_back( vertices[3*i], vertices[3*i+1], temp_angle<0 ? temp_angle+PI : temp_angle );
-      unbinned_walls.push_back(&all_walls[j]);
       boxes[all_walls[j].get_box()].push_back(&all_walls[j]);
       //if (j<10) all_walls[j].print();
       j++;

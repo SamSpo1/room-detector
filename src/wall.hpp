@@ -17,7 +17,7 @@ using namespace Eigen;
 const float crvt_max = 0.0005;
 const float nz_max = 0.0005;
 const float min_dist_from_ceil_and_floor = 0.05;
-const int min_bin_size = 0;
+const int min_bin_size = 250;
 const float max_var_ratio = 0.1;
 
 int total_len;
@@ -37,6 +37,7 @@ class Wall {
   public:
     Vector2f pos;
     float angle;
+		bool binned;
     Wall(float,float,float);
     Wall(Vector2f,float);
     Wall();
@@ -48,10 +49,8 @@ class Wall {
 vector<Wall*> empty_bin;
 
 vector<Wall> all_walls;
-vector<Wall*> unbinned_walls;
 vector< vector<Wall*> > untrimmed_bins;
 vector< vector<Wall*> > bins;
-//vector<Wall*> * boxes;
 vector< vector<Wall*> > boxes;
 
 vector<Wall*> next_layer;
@@ -74,14 +73,18 @@ Wall::Wall(float x, float y, float angle) {
   this->pos(0) = x;
   this->pos(1) = y;
   this->angle = fmod(angle,PI);
+	this->binned = false;
 }
 
 Wall::Wall(Vector2f pos, float angle) {
   this->pos = pos;
   this->angle = fmod(angle,PI);
+	this->binned = false;
 }
 
-Wall::Wall() { }
+Wall::Wall() {
+	this->binned = false;
+}
 
 int Wall::get_box() {
   return get_box_idx(this->pos(0),this->pos(1),this->angle);
@@ -92,20 +95,15 @@ void Wall::print() {
 }
 
 void Wall::binnize() { // get all the walls that belong in the same bin as *this, store their references in next_layer.  center of new_wall_finder method
-  int box_x = (int)((this->pos(0)-min_x)/max_dist);
+	int box_x = (int)((this->pos(0)-min_x)/max_dist);
   int box_y = (int)((this->pos(1)-min_y)/max_dist);
   int box_angle = (int)(this->angle/max_angle);
   int box = get_box_idx(box_x,box_y,box_angle);
   next_layer.pop_back();
   untrimmed_bins[bin].push_back(this);
   
-  for (int i=0; i<unbinned_walls.size(); i++) {
-    if (unbinned_walls[i] == this) {
-      unbinned_walls.erase(unbinned_walls.begin()+i);//should be erasing from the back!
-      break;
-    }
-  }
-  
+	this->binned = true;
+
   for (int i=-1; i<=1; i++) { for (int j=-1; j<=1; j++) { for (int k=-1; k<=1; k++) {
     box_x = (int)((this->pos(0)-min_x)/max_dist)+i;
     box_y = (int)((this->pos(1)-min_y)/max_dist)+j;
